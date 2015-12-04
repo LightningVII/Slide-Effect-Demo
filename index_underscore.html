@@ -35,10 +35,8 @@
 			width: 100%;
 			position: absolute;
 			left: 0;
-			top: 50%;
-			z-index: 1;
+			top: 0;
 		}
-
 		.slider .main .main-i .caption {
 			position: absolute;
 			right: 50%;
@@ -123,11 +121,6 @@
 			right: 50%;
 			top: 0;
 			-webkit-transition:all 0.5s;
-			z-index: 2;
-		}
-
-		.slider .main .main-i_right {
-			right: -50%;
 		}
 
 		.slider .main .main-i h2,
@@ -143,15 +136,10 @@
 		.slider .main .main-i h3 {
 			margin-right: -45px;
 		}
-
-		#main_background,
+	
 		.slider .main .main-i_active {
 			right: 0;
 			opacity: 1;
-		}
-
-		#main_background {
-			z-index: 1;
 		}
 
 		.slider .main .main-i_active h2,
@@ -169,12 +157,12 @@
 	<div class="slider">
 	<!-- 0. 修改VIEW Template（关键字替换），增加template id -->
 		<div class="main" id="template_main">
-			<div class="main-i {{css}}" id="main_{{index}}">
+			<div class="main-i" id="main_{{index}}">
 				<div class="caption">
 					<h2>{{h2}}</h2>
 					<h3>{{h3}}</h3>
 				</div>
-				<img src="imgs/{{index}}.jpg" class="picture" />
+				<img src="imgs/{{index}}.jpg" />
 			</div>
 		</div>
 		<div class="ctrl" id="template_ctrl">
@@ -223,8 +211,7 @@
 			var _html_main = tpl_main
 				.replace(/{{index}}/g, data[i].img)
 				.replace(/{{h2}}/g, data[i].h1)
-				.replace(/{{h3}}/g, data[i].h2)
-				.replace(/{{css}}/g, ['','main-i_right'][i%2]);
+				.replace(/{{h3}}/g, data[i].h2);
 
 			var _html_ctrl = tpl_ctrl
 				.replace(/{{index}}/g, data[i].img);
@@ -236,57 +223,11 @@
 		// 3.4 把 HTML 回写到对应的 DOM 里面
 		g('template_main').innerHTML = out_main.join('');
 		g('template_ctrl').innerHTML = out_ctrl.join('');
-
-		// 7.1 增加 #main_background 
-		g('template_main').innerHTML += tpl_main
-				.replace(/{{index}}/g, '{{index}}')
-				.replace(/{{h2}}/g, data[i].h1)
-				.replace(/{{h3}}/g, data[i].h2);
-		g('main_{{index}}').id = 'main_background';
-	}
-
-	// 5. 幻灯片切换
-	function switchSlider(n){
-		// 5.1 获取要展现的幻灯 & 控制按钮 DOM
-		var main = g('main_' + n);
-		var ctrl = g('ctrl_' + n);
-
-		// 5.2 获取所有的幻灯以及控制按钮
-		var clear_main = g('.main-i');
-		var clear_ctrl = g('.ctrl-i');
-		// 5.3 清除他们的 active 样式
-		for(var i = 0; i < clear_ctrl.length; i++){
-			clear_main[i].className = clear_main[i].className
-				.replace(' main-i_active', '');
-			clear_ctrl[i].className = clear_ctrl[i].className
-				.replace(' ctrl-i_active', '');
-		}
-
-		// 5.4 为当前控制按钮和幻灯片附加样式
-		main.className += " main-i_active";
-		ctrl.className += " ctrl-i_active";
-
-		// 7.2 切换时，复制上一张幻灯片到 main_background 中
-		setTimeout(function (){
-			g('main_background').innerHTML = main.innerHTML;
-		},1000);
-	}
-
-	// 6. 动态调整图片的 margin-top 以使其垂直居中
-	function movePictures(){
-		var pictures = g('.picture');
-		for(i = 0; i < pictures.length; i++){
-			pictures[i].style.marginTop = (-1 * pictures[i].clientHeight/2) + 'px';
-		}
 	}
 
 	// 4.定义何时处理幻灯片输出
 	window.onload = function (){
 		addSliders();
-		switchSlider(1);
-		setTimeout(function (){
-			movePictures();
-		},100)
 	}
 	</script>
 </body>
