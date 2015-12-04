@@ -156,21 +156,35 @@
 <body>
 	<div class="slider">
 	<!-- 0. 修改VIEW Template（关键字替换），增加template id -->
-		<div class="main" id="template_main">
-			<div class="main-i" id="main_{{index}}">
-				<div class="caption">
-					<h2>{{h2}}</h2>
-					<h3>{{h3}}</h3>
-				</div>
-				<img src="imgs/{{index}}.jpg" />
-			</div>
-		</div>
-		<div class="ctrl" id="template_ctrl">
-			<a href="javascript:switchSlider({{index}});" class="ctrl-i" id="ctrl_{{index}}">
-				<img src="imgs/{{index}}.jpg" />
-			</a>
-		</div>
+		<div class="main" id="template_main"></div>
+		<div class="ctrl" id="template_ctrl"></div>
 	</div>
+
+
+<!-- 
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+-->
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/underscore.js/1.7.0/underscore-min.js"></script>
+	<script id="temp_main" type="text/template">
+		<%_.each(data, function(item) {%>
+		<div class="main-i" id="main_<%=item.img%>">
+			<div class="caption">
+				<h2><%=item.h1%></h2>
+				<h3><%=item.h2%></h3>
+			</div>
+			<img src="imgs/<%=item.img%>.jpg" />
+		</div>
+		<%});%>
+	</script>
+
+	<script id="temp_ctrl" type="text/template">
+		<%_.each(data, function(item) {%>
+			<a href="javascript:switchSlider(<%=item.img%>);" class="ctrl-i" id="ctrl_<%=item.img%>">
+				<img src="imgs/<%=item.img%>.jpg" />
+			</a>
+		<%});%>
+	</script>
+
 	<script type="text/javascript">
 	// 1. 数据定义（实际生产环境中，应由后台给出）
 	var data = [
@@ -202,6 +216,19 @@
 			.replace(/^\s*/, '')
 			.replace(/\s*$/, '');
 
+		// underscore 写法
+		var temp_main = _.template(g('temp_main').innerHTML);
+		g('template_main').innerHTML = temp_main({data: data});
+
+		var temp_ctrl = _.template(g('temp_ctrl').innerHTML);
+		g('template_ctrl').innerHTML = temp_ctrl({data: data});
+
+		// underscore 依赖 jQuery 写法
+		//$("#template_main").html( _.template($("#temp_main").html(), data));
+		//$("#template_ctrl").html( _.template($("#temp_ctrl").html(), data));
+
+		/* 原方法
+		
 		// 3.2 定义最终输出 HTML 的变量
 		var out_main = [];
 		var out_ctrl = [];
@@ -221,8 +248,11 @@
 		}
 
 		// 3.4 把 HTML 回写到对应的 DOM 里面
-		g('template_main').innerHTML = out_main.join('');
-		g('template_ctrl').innerHTML = out_ctrl.join('');
+		//g('template_main').innerHTML = out_main.join('');
+		//g('template_ctrl').innerHTML = out_ctrl.join('');
+
+		*/
+
 	}
 
 	// 4.定义何时处理幻灯片输出
