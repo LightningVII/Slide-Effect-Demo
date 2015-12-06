@@ -81,7 +81,10 @@ body {
 	bottom: 50px;
 	z-index: 2;
 	opacity: 0;
+	transition: all .2s;
 	-webkit-transition: all .2s;
+	-moz-transition: all .2s;
+	-o-transition: all .2s;
 }
 
 .slider .ctrl .ctrl-i:hover {
@@ -116,7 +119,10 @@ body {
 	position: absolute;
 	right: 50%;
 	top: 0;
+	transition:all 0.5s;
 	-webkit-transition:all 0.5s;
+	-moz-transition:all 0.5s;
+	-o-transition:all 0.5s;
 	z-index: 2;
 }
 
@@ -127,7 +133,10 @@ body {
 .slider .main .main-i h2,
 .slider .main .main-i h3 {
 	opacity: 0;
+	transition:all 1s 0.8s;
 	-webkit-transition:all 1s 0.8s;
+	-moz-transition:all 1s 0.8s;
+	-o-transition:all 1s 0.8s;
 }
 
 .slider .main .main-i h2 {
